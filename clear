@@ -1,0 +1,35 @@
+[33mcommit c76a60c00b172344f6baccd8197f85afd0b81ac7[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Luidrocha <luidrocha@yahoo.com.br>
+Date:   Mon Jan 3 16:59:06 2022 -0300
+
+    CRUD Scaffolding Department
+
+[33mcommit 32305cf12aba3953468df949faacac9eb5622dc6[m
+Author: Luidrocha <luidrocha@yahoo.com.br>
+Date:   Mon Jan 3 16:41:09 2022 -0300
+
+    Removido DepartmentController e View Department
+
+[33mcommit 1af26ff468d84c85090431e84d1822a93c6cd7d5[m
+Author: Luidrocha <luidrocha@yahoo.com.br>
+Date:   Mon Jan 3 16:05:11 2022 -0300
+
+    Criado classe Department e Razo Page
+
+[33mcommit 6112c71678ed6dbfe0f8f7721ca4d0baa41192a5[m
+Author: Luidrocha <luidrocha@yahoo.com.br>
+Date:   Tue Dec 21 15:30:50 2021 -0300
+
+    primeiro Controller e Pagina RAZOR testes
+
+[33mcommit 8f369b22f3ac4ce39132ad0e2e1a86056668bb32[m
+Author: Luidrocha <luidrocha@yahoo.com.br>
+Date:   Thu Dec 16 16:41:03 2021 -0300
+
+    Projeto Criado
+
+[33mcommit 77dbd7dd18a22da3e3860f73651349f2f23d9348[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: luidrocha <50306917+luidrocha@users.noreply.github.com>
+Date:   Thu Dec 16 16:32:51 2021 -0300
+
+    Initial commit
