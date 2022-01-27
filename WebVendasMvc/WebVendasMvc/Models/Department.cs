@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WebVendasMvc.Models;
+using System.Linq;
 
 namespace WebVendasMvc.Models
 {
@@ -8,7 +9,7 @@ namespace WebVendasMvc.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Seller> Sellers { get; set; } = new List<Seller>();
+        public ICollection<Seller> Sellers { get; set; } = new List<Seller>(); // Um departamento tem varios vendedores
 
         public Department()
         {
@@ -30,7 +31,7 @@ namespace WebVendasMvc.Models
         public double TotalSalles(DateTime inicial, DateTime final)
         {
 
-            return 0;
+            return Sellers.Sum(Seller => Seller.TotalSalles(inicial, final)); // Faz o somatório da lista de vendedores
 
          // return Sellers.Sum
 
