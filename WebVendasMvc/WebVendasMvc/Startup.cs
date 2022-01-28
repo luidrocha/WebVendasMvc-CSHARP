@@ -40,18 +40,20 @@ namespace WebVendasMvc
             options.UseMySql(Configuration.GetConnectionString("WebVendasMvcContext"), builder =>
             builder.MigrationsAssembly("WebVendasMvc")));
 
+            services.AddScoped<SeedingService>(); // Registra o serviço para popular a base
 
-            /*    services.AddDbContext<WebVendasMvcContext>(options =>
-                         options.Myerver(Configuration.GetConnectionString("WebVendasMvcContext")));
-             } */
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seedingService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                seedingService.Seed(); // Popula a base de dados se estiver no ambiente de DESENVOLVIMENTO
+
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using WebVendasMvc.Models.Enums;
+using System.Collections.Generic;
 
 
 namespace WebVendasMvc.Models
@@ -13,6 +14,7 @@ namespace WebVendasMvc.Models
         public StatusVenda Status { get; set; }
         public Seller Seller { get; set; } // Cada venda tem um vendedor
 
+
         public SallersRecord()
         {
 
@@ -25,6 +27,9 @@ namespace WebVendasMvc.Models
             Amount = amount;
             Status = status;
             Seller = seller;
+
         }
+
+       
     }
 }
