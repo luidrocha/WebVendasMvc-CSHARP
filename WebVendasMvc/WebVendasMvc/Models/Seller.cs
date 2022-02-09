@@ -14,6 +14,7 @@ namespace WebVendasMvc.Models
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
         public Department Department  { get; set; } // Um vendedor pode esta em um departamento
+        public int DepartmentId { get; set; } // O complilador infere, Usado para criar uma chave Estrangeira inteira não nulla
         public double BaseSalary { get; set; }
         public ICollection<SallersRecord> Sales { get; set; } = new List<SallersRecord>();
 

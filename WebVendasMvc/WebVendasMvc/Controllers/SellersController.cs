@@ -34,6 +34,8 @@ namespace WebVendasMvc.Controllers
         [ValidateAntiForgeryToken] // Impede que outras pessoas enviem dados maliciosos usando sua sessão
         public IActionResult Create(Seller obj) // Framework instancia automaticamente o obj
         {
+            
+            
             _sellerService.Insert(obj);
 
             return RedirectToAction(nameof(Index));
