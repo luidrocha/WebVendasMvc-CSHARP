@@ -56,7 +56,7 @@ namespace WebVendasMvc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("BaseSalary");
+                    b.Property<double>("BaseSalary");
 
                     b.Property<DateTime>("BirthDate");
 

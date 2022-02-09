@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebVendasMvc.Data;
+using WebVendasMvc.Services;
 
 namespace WebVendasMvc
 {
@@ -41,6 +42,7 @@ namespace WebVendasMvc
             builder.MigrationsAssembly("WebVendasMvc")));
 
             services.AddScoped<SeedingService>(); // Registra o serviço para popular a base
+            services.AddScoped<SellerService>(); // Registra o servico para Seller
 
 
            

@@ -18,7 +18,7 @@ namespace WebVendasMvc.Migrations
                     Email = table.Column<string>(nullable: true),
                     BirthDate = table.Column<DateTime>(nullable: false),
                     DepartmentId = table.Column<int>(nullable: true),
-                    BaseSalary = table.Column<decimal>(nullable: false)
+                    BaseSalary = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
