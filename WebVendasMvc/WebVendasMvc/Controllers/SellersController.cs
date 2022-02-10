@@ -50,5 +50,38 @@ namespace WebVendasMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Delete(int? id)
+        {
+            //  Este metodo apenas acha o usuario e passa para view apresentar dos dados. Não EXCLUI
+
+            if (id == null)
+            {
+                return NotFound(); // Instancia, Retorna uma resposta basica 
+            }
+
+            var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal temque colocar o .Value
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult Delete(int Id)
+        {
+
+            _sellerService.Remove(Id);
+
+            return RedirectToAction(nameof(Index));
+
+
+        }
+
+
+
     }
 }
