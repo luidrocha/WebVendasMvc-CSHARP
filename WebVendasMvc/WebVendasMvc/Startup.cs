@@ -43,9 +43,10 @@ namespace WebVendasMvc
 
             services.AddScoped<SeedingService>(); // Registra o serviço para popular a base
             services.AddScoped<SellerService>(); // Registra o servico para Seller
+            services.AddScoped<DepartmentService>(); // Registra o servico para Departments
 
 
-           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

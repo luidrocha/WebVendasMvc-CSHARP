@@ -12,6 +12,7 @@ namespace WebVendasMvc.Services
         private readonly WebVendasMvcContext _context;
 
 
+
         public SellerService(WebVendasMvcContext context)
         {
 
@@ -26,7 +27,7 @@ namespace WebVendasMvc.Services
 
         public void Insert(Seller obj)
         {
-            obj.Department = _context.Department.First(); // Pegar o primeiro departamento. Provisorio
+            
             _context.Add(obj);
             _context.SaveChanges();
         }

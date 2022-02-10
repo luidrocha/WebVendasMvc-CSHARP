@@ -1,4 +1,5 @@
-﻿@model WebVendasMvc.Models.Seller;
+﻿@model WebVendasMvc.Models.ViewModels.SellerFormViewModel
+    <!-- Como usaremos dados de duas classes, tivemos que referenciar a VIEWMODEL-->
 @{
     ViewData["Title"] = "Create";
 }
@@ -9,24 +10,30 @@
 <hr /> <!-- Passa uma linha -->
 <div class="row">
     <!--Faz com que a div ocupe a tela inteira-->
-    <div class-="col-me-6">
+    <div class-="col-md-6">
         <!--ocupa 1/3 da tela -->
         <form asp-action="Create">
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Seller.Name" class="control-label"></label>
+                <input asp-for="Seller.Name" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <label asp-for="Seller.Email" class="control-label"></label>
+                <input asp-for="Seller.Email" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
+                <label asp-for="Seller.BirthDate" class="control-label"></label>
+                <input asp-for="Seller.BirthDate" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="BaseSalary" class="control-label"></label>
-                <input asp-for="BaseSalary" class="form-control" />
+                <label asp-for="Seller.BaseSalary" class="control-label"></label>
+                <input asp-for="Seller.BaseSalary" class="form-control" />
+            </div>
+            <div class="form-group"> <!-- Select para montar a caixinha - O Framework entende e não foi necessário ajustar o metodo POST-->
+                <label asp-for="Seller.DepartmentId" class="control-label"> </label>
+                <select asp-for="Seller.DepartmentId"
+                        asp-items="@(new SelectList(Model.Departments,"Id","Name"))"
+                        class="form-control"></select>
             </div>
             <div>
                 <input type="submit" value="Create" class="btn btn-default" />

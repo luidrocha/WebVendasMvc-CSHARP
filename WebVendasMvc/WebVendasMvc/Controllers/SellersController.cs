@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebVendasMvc.Models;
+using WebVendasMvc.Models.ViewModels;
 using WebVendasMvc.Services;
 
 namespace WebVendasMvc.Controllers
@@ -11,11 +12,15 @@ namespace WebVendasMvc.Controllers
     public class SellersController : Controller
     {
         public readonly SellerService _sellerService;
+        public readonly DepartmentService _departmentService;
 
-        public SellersController(SellerService sellerService)
+
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
 
             _sellerService = sellerService;
+            _departmentService = departmentService;
+
         }
 
         public IActionResult Index()
@@ -27,16 +32,20 @@ namespace WebVendasMvc.Controllers
 
         public IActionResult Create()
         {
+            // Metodo que abre a tela de cadastro do Usuario
 
-            return View();
+            var departments = _departmentService.FindAll(); // pega a lista de departamentos
+
+            var viewModel = new SellerFormViewModel { Departments = departments };// instancia os departamentos com a Lista 
+
+            return View(viewModel); // Passa a lista para View
         }
         [HttpPost]
         [ValidateAntiForgeryToken] // Impede que outras pessoas enviem dados maliciosos usando sua sessão
-        public IActionResult Create(Seller obj) // Framework instancia automaticamente o obj
+        public IActionResult Create(Seller seller) // Framework instancia automaticamente o obj
         {
-            
-            
-            _sellerService.Insert(obj);
+
+            _sellerService.Insert(seller);
 
             return RedirectToAction(nameof(Index));
         }
