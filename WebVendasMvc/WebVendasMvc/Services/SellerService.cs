@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebVendasMvc.Data;
 using WebVendasMvc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebVendasMvc.Services
 {
@@ -34,8 +35,9 @@ namespace WebVendasMvc.Services
 
         public Seller  FindById(int id)
         {
+            // Include(obj => obj.Department) Faz com que a associação seja Carregada Equivale a um JOINN
 
-            return _context.Seller.FirstOrDefault(obj => obj.Id == id);
+            return _context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id);
         }
 
         public void Remove(int id)

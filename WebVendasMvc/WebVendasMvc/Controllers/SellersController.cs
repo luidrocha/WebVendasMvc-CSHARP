@@ -68,6 +68,22 @@ namespace WebVendasMvc.Controllers
             return View(obj);
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound(); // Instancia, Retorna uma resposta basica 
+            }
+
+            var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal temque colocar o .Value
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 
