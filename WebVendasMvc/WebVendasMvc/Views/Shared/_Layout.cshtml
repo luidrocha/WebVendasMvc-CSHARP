@@ -42,12 +42,22 @@
 
     <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
+    <div class="container-fluid body-content">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+ 
+    <div>
+
         <footer>
+
+            <hr />
             <p>&copy; 2021 - WebVendasMvc</p>
+
+
         </footer>
+
     </div>
 
     <environment include="Development">

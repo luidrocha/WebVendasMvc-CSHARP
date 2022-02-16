@@ -1,5 +1,5 @@
 ﻿@model WebVendasMvc.Models.ViewModels.SellerFormViewModel
-    <!-- Como usaremos dados de duas classes, tivemos que referenciar a VIEWMODEL-->
+    <!-- Como usaremos dados de duas classes tivemos que referenciar a VIEWMODEL-->
 @{
     ViewData["Title"] = "Create";
 }
@@ -8,9 +8,9 @@
 <h4> Seller</h4>
 
 <hr /> <!-- Passa uma linha -->
-<div class="row">
+<div class="form-group" >
     <!--Faz com que a div ocupe a tela inteira-->
-    <div class-="col-md-6">
+    <div class="col-md-6">
         <!--ocupa 1/3 da tela -->
         <form asp-action="Create">
             <div class="form-group">
@@ -29,22 +29,21 @@
                 <label asp-for="Seller.BaseSalary" class="control-label"></label>
                 <input asp-for="Seller.BaseSalary" class="form-control" />
             </div>
-            <div class="form-group"> <!-- Select para montar a caixinha - O Framework entende e não foi necessário ajustar o metodo POST-->
+            <div class="form-group">
+                <!-- Select para montar a caixinha - O Framework entende e não foi necessário ajustar o metodo POST-->
                 <label asp-for="Seller.DepartmentId" class="control-label"> </label>
+                <!-- Cria a caixa combo-->
                 <select asp-for="Seller.DepartmentId"
                         asp-items="@(new SelectList(Model.Departments,"Id","Name"))"
                         class="form-control"></select>
             </div>
             <div>
                 <input type="submit" value="Create" class="btn btn-default" />
+                <a asp-action="Index">Back to List</a>
             </div>
 
         </form>
 
 
     </div>
-
-
-
-
 </div>

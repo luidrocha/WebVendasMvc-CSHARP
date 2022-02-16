@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebVendasMvc.Data;
 using WebVendasMvc.Models;
 using Microsoft.EntityFrameworkCore;
+using WebVendasMvc.Services.Exceptions;
 
 namespace WebVendasMvc.Services
 {
@@ -23,17 +24,17 @@ namespace WebVendasMvc.Services
         public List<Seller> FindAll()
         {
             // acessa a tabela e retorna a lista
-            return _context.Seller.ToList(); 
+            return _context.Seller.ToList();
         }
 
         public void Insert(Seller obj)
         {
-            
+
             _context.Add(obj);
             _context.SaveChanges();
         }
 
-        public Seller  FindById(int id)
+        public Seller FindById(int id)
         {
             // Include(obj => obj.Department) Faz com que a associação seja Carregada Equivale a um JOINN
 
@@ -45,6 +46,25 @@ namespace WebVendasMvc.Services
             var obj = _context.Seller.Find(id);
             _context.Seller.Remove(obj);
             _context.SaveChanges();
+        }
+
+        public void Update(Seller obj)
+        {
+            // Verifica se existe um usuario com o Id que chegou
+            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            {
+                throw new NotFoundException("Usuário não cadastrado !!");
+            }
+
+            try
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+            } // Esta exception indica que o banco foi atualizado simultaneamente  e nenm uma linha foi afetada 
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
 
     }
