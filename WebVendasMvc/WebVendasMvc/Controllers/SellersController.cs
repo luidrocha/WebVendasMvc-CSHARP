@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebVendasMvc.Models;
@@ -57,13 +58,15 @@ namespace WebVendasMvc.Controllers
 
             if (id == null)
             {
-                return NotFound(); // Instancia, Retorna uma resposta basica 
+                // Retorna a pagina de erro /  new { message = "Id não encontrado" }= Cria um objeto anonimo
+
+                return RedirectToAction(nameof(Error), new { message = "Id não especificado" });
             }
 
-            var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal temque colocar o .Value
+            var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal tem que colocar o .Value
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não contrado" });
             }
 
             return View(obj);
@@ -73,13 +76,13 @@ namespace WebVendasMvc.Controllers
         {
             if (id == null)
             {
-                return NotFound(); // Instancia, Retorna uma resposta basica 
+                return RedirectToAction(nameof(Error), new { message = "Id não especificado" });
             }
 
             var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal temque colocar o .Value
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
             return View(obj);
@@ -102,14 +105,14 @@ namespace WebVendasMvc.Controllers
         {
             if (Id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não especificado" });
             }
 
             var obj = _sellerService.FindById(Id.Value);
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
             List<Department> departments = _departmentService.FindAll();
@@ -126,9 +129,11 @@ namespace WebVendasMvc.Controllers
         // int? Id = recuperado da URL
         public IActionResult Edit(int? Id, Seller seller)
         {
+            // Verifica se o ID da url é o mesmo do Vendedor
+
             if (Id != seller.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id da solicitação diferente do Id do vendedor" });
             }
 
             try
@@ -136,16 +141,39 @@ namespace WebVendasMvc.Controllers
                 _sellerService.Update(seller);
                 return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException)
+            /* Nesse ponto estamos tratando EXCESSÃO
+               Poderiamos substituir os dois CATCH por uma excessão APLICATIONEXCEPRION 
+               que é SUPER-TIPO das duas classes  */
+
+
+
+            catch (NotFoundException e)
             {
-                return NotFound();
+                // Passamos a menssagem da excessão para pagina de error
+
+                return RedirectToAction(nameof(Error), new { message = e.Message });
 
             }
-            catch (DbConcurrencyException)
-            {
+            // Nesse ponto estamos tratando EXCESSÃO
 
-                return BadRequest();
+            catch (DbConcurrencyException e)
+            {
+                // Passamos a menssagem da excessão para pagina de error
+
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
+        }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                // Pegando o ID internoda Requisição pacote: using System.Diagnostics;
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
         }
 
     }
