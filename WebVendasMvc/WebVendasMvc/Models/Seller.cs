@@ -11,12 +11,20 @@ namespace WebVendasMvc.Models
     public class Seller
     {
         public int Id { get; set; }
+
+        // informa que o campo é obrigatorio / {0} pega automaticamento o nome do atributo
+        // {2} minimo e {1} maximo
+        [Required(ErrorMessage = "{0} Obrigatorio")] // {0} pega o atributo
+        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} deve ter no minimo {2} caracteres e no máximo {1}")]
         public string Name { get; set; }
 
-        [DataType (DataType.EmailAddress)] // Formata o E-mail ja com link
+        [Required]
+        [EmailAddress(ErrorMessage ="Email inválido")]
+        [DataType(DataType.EmailAddress)] // Formata o E-mail ja com link
         public string Email { get; set; }
-        
+
         // do pacote using System.ComponentModel.DataAnnotations / Formatar a label no HTML
+        [Required]
         [Display(Name = "Birth Date")]
         [DataType(DataType.Date)] // Formata a Data
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")] // Formata a data dia/mes/ano
@@ -24,9 +32,11 @@ namespace WebVendasMvc.Models
 
         public Department Department { get; set; } // Um vendedor pode esta em um departamento
         public int DepartmentId { get; set; } // O complilador infere, Usado para criar uma chave Estrangeira inteira não nulla
-        
+
+        [Required]
+        [Range(100.0, 5000.0, ErrorMessage ="{0} Deve está entre {1} e {2}")]
         [Display(Name = "Salario Base")]
-        [DisplayFormat(DataFormatString ="{0:F2}")] // Formata o valor com 2 casas decimais. O (Zero) indica o valor do atributo
+        [DisplayFormat(DataFormatString = "{0:F2}")] // Formata o valor com 2 casas decimais. O (Zero) indica o valor do atributo
         public double BaseSalary { get; set; }
         public ICollection<SallersRecord> Sales { get; set; } = new List<SallersRecord>();
 

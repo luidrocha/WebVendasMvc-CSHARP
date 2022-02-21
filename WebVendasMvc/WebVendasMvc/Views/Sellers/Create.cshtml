@@ -8,26 +8,36 @@
 <h4> Seller</h4>
 
 <hr /> <!-- Passa uma linha -->
-<div class="form-group" >
+
+<div class="form-group">
+
     <!--Faz com que a div ocupe a tela inteira-->
-    <div class="col-md-6">
+    <div class="col-md-4">
         <!--ocupa 1/3 da tela -->
         <form asp-action="Create">
+           
+            <!-- Exibe as mensagens de Validação -->
+            <div asp-validation-summary="All" class="text-danger"> </div>
+
             <div class="form-group">
                 <label asp-for="Seller.Name" class="control-label"></label>
                 <input asp-for="Seller.Name" class="form-control" />
+                <span asp-validation-for="Seller.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Seller.Email" class="control-label"></label>
                 <input asp-for="Seller.Email" class="form-control" />
+                <span asp-validation-for="Seller.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Seller.BirthDate" class="control-label"></label>
                 <input asp-for="Seller.BirthDate" class="form-control" />
+                <span asp-validation-for="Seller.BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Seller.BaseSalary" class="control-label"></label>
                 <input asp-for="Seller.BaseSalary" class="form-control" />
+                <span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <!-- Select para montar a caixinha - O Framework entende e não foi necessário ajustar o metodo POST-->
@@ -47,3 +57,9 @@
 
     </div>
 </div>
+
+<!-- Cliente side validation -->
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

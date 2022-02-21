@@ -9,6 +9,9 @@ using WebVendasMvc.Models.ViewModels;
 using WebVendasMvc.Services;
 using WebVendasMvc.Services.Exceptions;
 
+// No controlador deve-se manter o padrão de nome por isso não mudamos o nome para ASYNC
+// Somento os metodos são mudados
+
 namespace WebVendasMvc.Controllers
 {
     public class SellersController : Controller
@@ -25,34 +28,25 @@ namespace WebVendasMvc.Controllers
 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var lista = _sellerService.FindAll(); // Executa o metodo do MODEL da classe de serviço SellerService
+            var lista = await _sellerService.FindAllAsync(); // Executa o metodo do MODEL da classe de serviço SellerService
 
             return View(lista); // passa a lista como argumento para view.
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             // Metodo que abre a tela de cadastro do Usuario
 
-            var departments = _departmentService.FindAll(); // pega a lista de departamentos
+            var departments = await _departmentService.FindAllAsync(); // pega a lista de departamentos
 
             var viewModel = new SellerFormViewModel { Departments = departments };// instancia os departamentos com a Lista 
 
             return View(viewModel); // Passa a lista para View
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken] // Impede que outras pessoas enviem dados maliciosos usando sua sessão
-        public IActionResult Create(Seller seller) // Framework instancia automaticamente o obj
-        {
 
-            _sellerService.Insert(seller);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             //  Este metodo apenas acha o usuario e passa para view apresentar dos dados. Não EXCLUI
 
@@ -63,7 +57,7 @@ namespace WebVendasMvc.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não especificado" });
             }
 
-            var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal tem que colocar o .Value
+            var obj = await _sellerService.FindByIdAsync(id.Value); // Como o Id é opcinal tem que colocar o .Value
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não contrado" });
@@ -72,14 +66,14 @@ namespace WebVendasMvc.Controllers
             return View(obj);
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não especificado" });
             }
 
-            var obj = _sellerService.FindById(id.Value); // Como o Id é opcinal temque colocar o .Value
+            var obj = await _sellerService.FindByIdAsync(id.Value); // Como o Id é opcinal temque colocar o .Value
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
@@ -88,34 +82,23 @@ namespace WebVendasMvc.Controllers
             return View(obj);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public IActionResult Delete(int Id)
+        public async Task<IActionResult> Edit(int? Id)
         {
 
-            _sellerService.Remove(Id);
 
-            return RedirectToAction(nameof(Index));
-
-
-        }
-
-        public IActionResult Edit(int? Id)
-        {
             if (Id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não especificado" });
             }
 
-            var obj = _sellerService.FindById(Id.Value);
+            var obj = await _sellerService.FindByIdAsync(Id.Value);
 
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
-            List<Department> departments = _departmentService.FindAll();
+            List<Department> departments = await _departmentService.FindAllAsync();
 
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
 
@@ -123,12 +106,73 @@ namespace WebVendasMvc.Controllers
 
         }
 
+
+        public IActionResult Error(string message)
+        {
+            // Erro viewModel e uma classe 
+
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                // Pegando o ID internoda Requisição pacote: using System.Diagnostics;
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Impede que outras pessoas enviem dados maliciosos usando sua sessão
+        public async Task<IActionResult> Create(Seller seller) // Framework instancia automaticamente o obj
+        {
+            // Valida no back-end, server-side se o objeto seller foi validado. 
+            // Se o JavaScript for desbilitado no navegador do usuario as validaçães não serão executadas 
+
+            if (!ModelState.IsValid)
+            {
+                var departments = await _departmentService.FindAllAsync();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                // Devolve o objeto para view até validar
+                return View(viewModel);
+            }
+
+            await _sellerService.InsertAsync(seller);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int Id)
+        {
+
+            await _sellerService.RemoveAsync(Id);
+
+            return RedirectToAction(nameof(Index));
+
+
+        }
+
+
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-
         // int? Id = recuperado da URL
-        public IActionResult Edit(int? Id, Seller seller)
+        public async Task<IActionResult> Edit(int? Id, Seller seller)
         {
+            // Valida no back-end, server-side se o objeto seller foi validado. 
+            // Se o JavaScript for desbilitado no navegador do usuario as validaçães não serão executadas 
+
+            if (!ModelState.IsValid)
+            {
+                var departments = await _departmentService.FindAllAsync();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+
+                // Devolve o objeto para viewl até validar
+                return View(viewModel);
+            }
+
             // Verifica se o ID da url é o mesmo do Vendedor
 
             if (Id != seller.Id)
@@ -138,7 +182,7 @@ namespace WebVendasMvc.Controllers
 
             try
             {
-                _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
             }
             /* Nesse ponto estamos tratando EXCESSÃO
@@ -164,17 +208,7 @@ namespace WebVendasMvc.Controllers
             }
         }
 
-        public IActionResult Error(string message)
-        {
-            var viewModel = new ErrorViewModel
-            {
-                Message = message,
-                // Pegando o ID internoda Requisição pacote: using System.Diagnostics;
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-            };
 
-            return View(viewModel);
-        }
 
     }
 }
