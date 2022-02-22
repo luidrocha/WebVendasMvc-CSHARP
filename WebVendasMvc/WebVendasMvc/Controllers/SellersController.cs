@@ -114,7 +114,7 @@ namespace WebVendasMvc.Controllers
             var viewModel = new ErrorViewModel
             {
                 Message = message,
-                // Pegando o ID internoda Requisição pacote: using System.Diagnostics;
+                // Pegando o ID Retornado Requisição pacote: using System.Diagnostics;
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
             };
 
@@ -147,11 +147,17 @@ namespace WebVendasMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int Id)
         {
+            try
+            {
+                await _sellerService.RemoveAsync(Id);
 
-            await _sellerService.RemoveAsync(Id);
-
-            return RedirectToAction(nameof(Index));
-
+                return RedirectToAction(nameof(Index));
+            }
+            // CAptura Excessão de integridade violada no bancode dados... 
+            catch (IntegrityException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Vendedor não pode ser excluido pois tem vendas relacionadas" });
+            }
 
         }
 
