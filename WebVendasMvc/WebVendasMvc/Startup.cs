@@ -47,7 +47,7 @@ namespace WebVendasMvc
             services.AddScoped<SeedingService>(); // Registra o serviço para popular a base
             services.AddScoped<SellerService>(); // Registra o servico para Seller
             services.AddScoped<DepartmentService>(); // Registra o servico para Departments
-
+            services.AddScoped <SalesRecordService>(); // Rgistra o serviço Vendas dos vendedors
 
 
         }
