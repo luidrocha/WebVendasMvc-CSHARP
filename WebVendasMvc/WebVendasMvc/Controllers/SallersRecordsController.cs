@@ -45,10 +45,28 @@ namespace WebVendasMvc.Controllers
             return View(result);
         }
 
-        public IActionResult GroupingSearch()
+        public async Task<IActionResult> GroupingSearch(DateTime? minDate, DateTime? maxDate)
         {
+            // Senão for informada a data minima
+            if (!minDate.HasValue)
+            {
+                minDate = new DateTime(DateTime.Now.Year, 1, 1);
 
-            return View();
+            }
+            // Senão for informado, seta a data atual
+            if (!maxDate.HasValue)
+            {
+                maxDate = DateTime.Now;
+            }
+            // Cria a chave que será passada para a view
+
+            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
+
+
+            var result = await _salesRecordService.FindGroupingByDateAsync(minDate, maxDate);
+
+            return View(result);
         }
     }
 }

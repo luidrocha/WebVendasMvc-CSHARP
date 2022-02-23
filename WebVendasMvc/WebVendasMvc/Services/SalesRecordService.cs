@@ -39,5 +39,30 @@ namespace WebVendasMvc.Services
             
            
         }
+        // Busca Agrupada por departamento
+        public async Task<List<IGrouping<Department, SallersRecord>>> FindGroupingByDateAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            // cria um obj do tipo IQueryable 
+            var result = from obj in _context.SellersRecord select obj; // LINQ
+
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Data >= minDate.Value);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Data <= maxDate.Value);
+            }
+            return await result
+                  // pacote Microsoft.EntityFrameworkCore; Include faz o JOINN
+                  .Include(x => x.Seller)
+                  .Include(x => x.Seller.Department)
+                  .OrderByDescending(x => x.Data)
+                  // Retorna uma coleção Igroup
+                  .GroupBy(x => x.Seller.Department)
+                  .ToListAsync();
+
+
+        }
     }
 }

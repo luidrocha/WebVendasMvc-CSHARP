@@ -1,14 +1,16 @@
 ﻿using System;
 using WebVendasMvc.Models.Enums;
-using System.Collections.Generic;
-
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebVendasMvc.Models
 {
     public class SallersRecord
     {
         public int Id { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Data { get; set; }
+        [DisplayFormat(DataFormatString ="{0:F2}")]
         public double Amount { get; set; }
 
         public StatusVenda Status { get; set; }
